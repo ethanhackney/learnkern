@@ -14,13 +14,14 @@ static struct proc_dir_entry *procfile;
 
 static ssize_t procfile_read(struct file *filp,
                              char __user *buf,
-                             size_t len,
+                             size_t buflen,
                              loff_t *off)
 {
         char s[13] = "Hello World!\n";
-        int ret;
+        int len = sizeof(s);
+        ssize_t ret;
 
-        if (*off >= len || copy_to_user(buf, s, sizeof(s))) {
+        if (*off >= len || copy_to_user(buf, s, len)) {
                 pr_info("could not copy to user\n");
                 ret = 0;
         } else {
